@@ -2,7 +2,7 @@
 .home {
   display: grid;
   grid-template-columns: 3fr 1fr;
-  gap: 100px;
+  gap: 30px;
 }
 .workout-details {
   background: #fff;
