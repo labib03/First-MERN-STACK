@@ -15,7 +15,7 @@ function Home() {
     }
 
     getWorkouts();
-  }, []);
+  }, [dispatch]);
 
   console.log(state);
 
