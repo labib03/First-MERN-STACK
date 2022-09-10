@@ -30,6 +30,23 @@ const getSingleWorkout = async (req, res) => {
 const createWorkout = async (req, res) => {
   const { title, load, reps } = req.body;
 
+  let emptyFields = [];
+
+  if (!title) {
+    emptyFields.push("title");
+  }
+  if (!load) {
+    emptyFields.push("load");
+  }
+  if (!reps) {
+    emptyFields.push("reps");
+  }
+  if (emptyFields.length > 0) {
+    return res
+      .status(400)
+      .json({ error: "Please fill all field", emptyFields });
+  }
+
   try {
     const newWorkout = await WorkoutCollection.create({ title, reps, load });
     const allWorkouts = await WorkoutCollection.find({}).sort({
