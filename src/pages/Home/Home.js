@@ -1,24 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import { WorkoutDetail, WorkoutForm } from "../../components";
+import { WorkoutsContext } from "../../context/WorkoutsContext";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 function Home() {
-  const [workouts, setWorkouts] = useState(null);
+  const { state, dispatch } = useContext(WorkoutsContext);
+  const [parent] = useAutoAnimate();
 
   useEffect(() => {
     async function getWorkouts() {
       const response = await axios.get("http://localhost:4000/api/workout");
-      setWorkouts(response?.data);
+      dispatch({ type: "SET_WORKOUTS", payload: response?.data });
     }
 
     getWorkouts();
   }, []);
 
+  console.log(state);
+
   return (
     <div className="home">
-      <div className="workouts">
-        {workouts && workouts?.data?.length > 0 ? (
-          workouts?.data?.map((workout) => (
+      <div ref={parent} className="workouts">
+        <span>Total Workout : {state?.workouts?.total} Workouts</span>
+        {state?.workouts && state?.workouts?.data?.length > 0 ? (
+          state?.workouts?.data?.map((workout) => (
             <WorkoutDetail key={workout._id} workout={workout} />
           ))
         ) : (

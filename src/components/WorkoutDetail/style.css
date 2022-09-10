@@ -27,8 +27,22 @@
   top: 20px;
   right: 20px;
   cursor: pointer;
-  background: #f1f1f1;
+  color: red;
   padding: 6px;
-  border-radius: 50%;
-  color: #333;
+  font-size: 0.9rem;
+}
+
+.workout-details span::after {
+  content: "";
+  position: absolute;
+  background-color: red;
+  height: 2px;
+  width: 0;
+  left: 6px;
+  bottom: 3px;
+  transition: 0.2s;
+}
+
+.workout-details span:hover::after {
+  width: 85%;
 }
