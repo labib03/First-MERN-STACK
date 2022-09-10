@@ -32,7 +32,10 @@ const createWorkout = async (req, res) => {
 
   try {
     const newWorkout = await WorkoutCollection.create({ title, reps, load });
-    res.status(200).json(newWorkout);
+    const allWorkouts = await WorkoutCollection.find({}).sort({
+      createdAt: -1,
+    });
+    res.status(200).json({ newWorkout, total: allWorkouts.length });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -66,12 +69,17 @@ const deleteWorkout = async (req, res) => {
   }
 
   const workout = await WorkoutCollection.findByIdAndDelete(id);
+  const allWorkouts = await WorkoutCollection.find({}).sort({
+    createdAt: -1,
+  });
 
   if (!workout) {
     return res.status(404).json({ error: `No file found with id : ${id}` });
   }
 
-  res.status(200).json({ delete: true, data: workout });
+  res
+    .status(200)
+    .json({ delete: true, dataDeleted: workout, total: allWorkouts.length });
 };
 
 module.exports = {
